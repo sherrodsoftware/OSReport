@@ -1,9 +1,10 @@
 import AppKit
 import Sparkle
 import SwiftUI
+import UserNotifications
 
 @MainActor
-final class StatusItemController: NSObject {
+final class StatusItemController: NSObject, NSMenuDelegate, UNUserNotificationCenterDelegate {
     private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
     private let menu = NSMenu()
     private var platforms: [Platform] = []
@@ -13,6 +14,8 @@ final class StatusItemController: NSObject {
     private var timer: Timer?
     private var settingsWindow: NSWindow?
     private let updater: SPUUpdater
+    private let tracker = ReleaseTracker()
+    private let badge = NSView()
 
     private static let maxReleasesPerPlatform = 20
 
@@ -20,6 +23,9 @@ final class StatusItemController: NSObject {
         self.updater = updater
         super.init()
         statusItem.menu = menu
+        menu.delegate = self
+        UNUserNotificationCenter.current().delegate = self
+        setUpBadge()
         updateIcon()
         rebuildMenu()
         let interval = RefreshInterval.current
@@ -69,6 +75,10 @@ final class StatusItemController: NSObject {
                     platforms = parsed
                     lastUpdated = Date()
                     lastError = nil
+                    let new = tracker.recordNewReleases(in: parsed)
+                    if !new.isEmpty {
+                        Task { await ReleaseTracker.notify(about: new) }
+                    }
                 }
             } catch {
                 lastError = error.localizedDescription
@@ -91,6 +101,7 @@ final class StatusItemController: NSObject {
                 button.title = "OS"
             }
         }
+        badge.isHidden = tracker.unseen.isEmpty
         button.wantsLayer = true
         button.layer?.removeAnimation(forKey: "pulse")
         if isLoading {
@@ -134,8 +145,16 @@ final class StatusItemController: NSObject {
             }
             title.append(NSAttributedString(string: platform.latest.name))
             title.addAttribute(.font, value: font, range: NSRange(location: 0, length: title.length))
+            if tracker.unseen.contains(platform.name) {
+                title.append(NSAttributedString(string: "  ●", attributes: [
+                    .font: NSFont.menuFont(ofSize: font.pointSize * 0.7),
+                    .foregroundColor: NSColor.controlAccentColor,
+                    .baselineOffset: 1,
+                ]))
+                top.toolTip = "New · \(platform.latest.date)"
+            }
             top.attributedTitle = title
-            top.toolTip = platform.latest.date
+            if top.toolTip == nil { top.toolTip = platform.latest.date }
 
             let submenu = NSMenu()
             for (index, release) in platform.releases.prefix(Self.maxReleasesPerPlatform).enumerated() {
@@ -186,6 +205,40 @@ final class StatusItemController: NSObject {
 
         let quit = NSMenuItem(title: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         menu.addItem(quit)
+    }
+
+    private func setUpBadge() {
+        guard let button = statusItem.button else { return }
+        let size: CGFloat = 6
+        badge.wantsLayer = true
+        badge.layer?.backgroundColor = NSColor.systemRed.cgColor
+        badge.layer?.cornerRadius = size / 2
+        badge.translatesAutoresizingMaskIntoConstraints = false
+        badge.isHidden = true
+        button.addSubview(badge)
+        NSLayoutConstraint.activate([
+            badge.widthAnchor.constraint(equalToConstant: size),
+            badge.heightAnchor.constraint(equalToConstant: size),
+            badge.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: -3),
+            badge.topAnchor.constraint(equalTo: button.topAnchor, constant: 3),
+        ])
+    }
+
+    func menuDidClose(_ menu: NSMenu) {
+        guard !tracker.unseen.isEmpty else { return }
+        tracker.markAllSeen()
+        updateIcon()
+        rebuildMenu()
+    }
+
+    nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                            willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
+        [.banner, .sound]
+    }
+
+    nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                            didReceive response: UNNotificationResponse) async {
+        await MainActor.run { self.statusItem.button?.performClick(nil) }
     }
 
     @objc private func checkForUpdates() {

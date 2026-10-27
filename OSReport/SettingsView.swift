@@ -37,6 +37,7 @@ enum RefreshInterval: String, CaseIterable, Identifiable {
 
 struct SettingsView: View {
     @AppStorage(RefreshInterval.defaultsKey) private var interval: RefreshInterval = .default
+    @AppStorage(ReleaseTracker.notificationsKey) private var notifyNewReleases = true
     @State private var checksForAppUpdates: Bool
     private let updater: SPUUpdater
     var onIntervalChange: (RefreshInterval) -> Void
@@ -67,6 +68,22 @@ struct SettingsView: View {
                     }
                     .pickerStyle(.radioGroup)
                     .labelsHidden()
+                }
+                .padding(10)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(.quinary, in: RoundedRectangle(cornerRadius: 10))
+            }
+
+            VStack(alignment: .leading, spacing: 6) {
+                Text("Notifications")
+                    .padding(.horizontal, 10)
+
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Show one notification summarizing new releases each time OS Report finds them.")
+                        .foregroundStyle(.secondary)
+
+                    Toggle("Notify me about new releases", isOn: $notifyNewReleases)
+                        .toggleStyle(.checkbox)
                 }
                 .padding(10)
                 .frame(maxWidth: .infinity, alignment: .leading)

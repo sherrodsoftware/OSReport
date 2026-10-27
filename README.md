@@ -22,8 +22,15 @@ newest version of each platform right in the menu bar—no browsing required.
 6. **Keeps iOS and iPadOS separate**, even when Apple lists them together.
 7. **Refreshes on your schedule.** Choose on launch, every hour, every 6
    hours, every day, or manually only in Settings.
-8. **Shows a subtle loading indicator** in the menu bar while it fetches, and
-   the time of the last successful update in the menu.
+8. **Flags new releases.** When a refresh finds a newer version, a small dot
+   appears on the menu bar icon and next to each new release in the menu until
+   you've opened it.
+9. **Sends one notification per batch** of new releases instead of one for
+   every platform. Notifications can be turned off in Settings.
+10. **Shows a subtle loading indicator** in the menu bar while it fetches, and
+    the time of the last successful update in the menu.
+11. **Keeps itself up to date** with built-in app updates powered by
+    [Sparkle](https://sparkle-project.org).
 
 ## Requirements
 
