@@ -1,5 +1,5 @@
 <h1>
-  <img src="docs/images/os-report-icon.png" alt="OS Report icon" width="48" />
+  <img src="docs/images/os-report-icon-2026.10.27.png" alt="OS Report icon" width="48" />
   OS Report
 </h1>
 
