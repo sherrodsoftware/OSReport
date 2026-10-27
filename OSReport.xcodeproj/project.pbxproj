@@ -11,7 +11,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A10000000000000000000005 /* OSReport.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OSReport.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10000000000000000000005 /* OS Report.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "OS Report.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -58,7 +58,7 @@
 		A10000000000000000000003 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A10000000000000000000005 /* OSReport.app */,
+				A10000000000000000000005 /* OS Report.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -86,7 +86,7 @@
 				A10000000000000000000041 /* Sparkle */,
 			);
 			productName = OSReport;
-			productReference = A10000000000000000000005 /* OSReport.app */;
+			productReference = A10000000000000000000005 /* OS Report.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -189,7 +189,8 @@
 				);
 				MARKETING_VERSION = 2026.10.27;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sherrodsoftware.OSReport;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_MODULE_NAME = OSReport;
+				PRODUCT_NAME = "OS Report";
 				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
@@ -215,7 +216,8 @@
 				);
 				MARKETING_VERSION = 2026.10.27;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sherrodsoftware.OSReport;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_MODULE_NAME = OSReport;
+				PRODUCT_NAME = "OS Report";
 				SWIFT_VERSION = 6.0;
 			};
 			name = Release;

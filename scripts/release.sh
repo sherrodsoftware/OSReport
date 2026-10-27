@@ -8,6 +8,7 @@ cd "$(dirname "$0")/.."
 TEAM_ID="LAR9U97K23"
 BUNDLE_ID="com.sherrodsoftware.OSReport"
 APP_NAME="OSReport"
+APP_BUNDLE="OS Report.app"
 INSTALLER_IDENTITY="Developer ID Installer: JOHN WILLIAM SHERROD (${TEAM_ID})"
 NOTARY_PROFILE="${NOTARY_PROFILE:-notary}"
 SKIP_NOTARIZE=false
@@ -41,7 +42,7 @@ EOF
 xcodebuild -exportArchive -archivePath "$ARCHIVE" -exportPath "$EXPORT" \
     -exportOptionsPlist "${WORK}/ExportOptions.plist" -allowProvisioningUpdates -quiet
 
-APP="${EXPORT}/${APP_NAME}.app"
+APP="${EXPORT}/${APP_BUNDLE}"
 VERSION=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" "${APP}/Contents/Info.plist")
 BUILD=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" "${APP}/Contents/Info.plist")
 PKG="dist/${APP_NAME}-${VERSION}.pkg"
@@ -50,7 +51,8 @@ codesign --verify --deep --strict "$APP"
 echo "==> Building ${PKG} (version ${VERSION}, build ${BUILD})"
 ROOT="${WORK}/root"
 mkdir -p "$ROOT"
-ditto "$APP" "${ROOT}/${APP_NAME}.app"
+ditto --noextattr --noqtn "$APP" "${ROOT}/${APP_BUNDLE}"
+codesign --verify --deep --strict "${ROOT}/${APP_BUNDLE}"
 COMPONENTS="${WORK}/components.plist"
 pkgbuild --analyze --root "$ROOT" "$COMPONENTS" >/dev/null
 /usr/libexec/PlistBuddy -c "Delete :0:BundleIsRelocatable" "$COMPONENTS" 2>/dev/null || true
