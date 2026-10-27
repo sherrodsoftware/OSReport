@@ -1,4 +1,5 @@
 import AppKit
+import Sparkle
 import SwiftUI
 
 @MainActor
@@ -11,10 +12,12 @@ final class StatusItemController: NSObject {
     private var isLoading = false
     private var timer: Timer?
     private var settingsWindow: NSWindow?
+    private let updater: SPUUpdater
 
     private static let maxReleasesPerPlatform = 20
 
-    override init() {
+    init(updater: SPUUpdater) {
+        self.updater = updater
         super.init()
         statusItem.menu = menu
         updateIcon()
@@ -35,7 +38,7 @@ final class StatusItemController: NSObject {
 
     @objc private func openSettings() {
         if settingsWindow == nil {
-            let view = SettingsView { [weak self] in self?.schedule($0) }
+            let view = SettingsView(updater: updater) { [weak self] in self?.schedule($0) }
             let window = NSWindow(contentViewController: NSHostingController(rootView: view))
             window.title = "OS Report Settings"
             window.styleMask = [.titled, .closable]
@@ -173,12 +176,21 @@ final class StatusItemController: NSObject {
         menu.addItem(statusItemEntry)
 
         menu.addItem(.separator())
+        let updates = NSMenuItem(title: "Check for Updates…", action: #selector(checkForUpdates), keyEquivalent: "")
+        updates.target = self
+        menu.addItem(updates)
+
         let settings = NSMenuItem(title: "Settings…", action: #selector(openSettings), keyEquivalent: ",")
         settings.target = self
         menu.addItem(settings)
 
         let quit = NSMenuItem(title: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         menu.addItem(quit)
+    }
+
+    @objc private func checkForUpdates() {
+        NSApp.activate()
+        updater.checkForUpdates()
     }
 
     private static func fixedWidthGlyph(_ name: String, font: NSFont) -> NSImage? {

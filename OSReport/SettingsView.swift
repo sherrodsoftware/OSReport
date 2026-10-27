@@ -1,3 +1,4 @@
+import Sparkle
 import SwiftUI
 
 enum RefreshInterval: String, CaseIterable, Identifiable {
@@ -36,7 +37,15 @@ enum RefreshInterval: String, CaseIterable, Identifiable {
 
 struct SettingsView: View {
     @AppStorage(RefreshInterval.defaultsKey) private var interval: RefreshInterval = .default
+    @State private var checksForAppUpdates: Bool
+    private let updater: SPUUpdater
     var onIntervalChange: (RefreshInterval) -> Void
+
+    init(updater: SPUUpdater, onIntervalChange: @escaping (RefreshInterval) -> Void) {
+        self.updater = updater
+        self.onIntervalChange = onIntervalChange
+        _checksForAppUpdates = State(initialValue: updater.automaticallyChecksForUpdates)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -63,10 +72,27 @@ struct SettingsView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(.quinary, in: RoundedRectangle(cornerRadius: 10))
             }
+
+            VStack(alignment: .leading, spacing: 6) {
+                Text("App Updates")
+                    .padding(.horizontal, 10)
+
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Check for new versions of OS Report and offer to install them.")
+                        .foregroundStyle(.secondary)
+
+                    Toggle("Automatically check for updates", isOn: $checksForAppUpdates)
+                        .toggleStyle(.checkbox)
+                }
+                .padding(10)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(.quinary, in: RoundedRectangle(cornerRadius: 10))
+            }
         }
         .padding(24)
         .frame(width: 440)
         .fixedSize(horizontal: false, vertical: true)
         .onChange(of: interval) { _, newValue in onIntervalChange(newValue) }
+        .onChange(of: checksForAppUpdates) { _, newValue in updater.automaticallyChecksForUpdates = newValue }
     }
 }
