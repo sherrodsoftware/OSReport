@@ -8,6 +8,10 @@ operating system releases at a glance. OS Report reads Apple's
 [security releases page](https://support.apple.com/en-us/100100) and lists the
 newest version of each platform right in the menu bar—no browsing required.
 
+<p align="center">
+  <img src="docs/images/os-report-menu-2026.10.27.png" alt="OS Report menu showing the latest Apple OS releases" width="520" />
+</p>
+
 ## What it does
 
 1. **Lives in the menu bar only.** No Dock icon and no main window—just a
