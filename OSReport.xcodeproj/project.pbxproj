@@ -10,8 +10,19 @@
 		A10000000000000000000042 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000041 /* Sparkle */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		A10000000000000000000056 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A10000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A10000000000000000000020;
+			remoteInfo = OSReport;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		A10000000000000000000005 /* OS Report.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "OS Report.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10000000000000000000051 /* OSReportTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OSReportTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -19,6 +30,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
+				OSReport.entitlements,
 			);
 			target = A10000000000000000000020 /* OSReport */;
 		};
@@ -33,6 +45,11 @@
 			path = OSReport;
 			sourceTree = "<group>";
 		};
+		A10000000000000000000052 /* OSReportTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = OSReportTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +61,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A10000000000000000000054 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -51,6 +75,7 @@
 			isa = PBXGroup;
 			children = (
 				A10000000000000000000004 /* OSReport */,
+				A10000000000000000000052 /* OSReportTests */,
 				A10000000000000000000003 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -59,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				A10000000000000000000005 /* OS Report.app */,
+				A10000000000000000000051 /* OSReportTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -89,6 +115,27 @@
 			productReference = A10000000000000000000005 /* OS Report.app */;
 			productType = "com.apple.product-type.application";
 		};
+		A10000000000000000000050 /* OSReportTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A10000000000000000000060 /* Build configuration list for PBXNativeTarget "OSReportTests" */;
+			buildPhases = (
+				A10000000000000000000053 /* Sources */,
+				A10000000000000000000054 /* Frameworks */,
+				A10000000000000000000055 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A10000000000000000000057 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A10000000000000000000052 /* OSReportTests */,
+			);
+			name = OSReportTests;
+			productName = OSReportTests;
+			productReference = A10000000000000000000051 /* OSReportTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -98,6 +145,11 @@
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					A10000000000000000000050 = {
+						TestTargetID = A10000000000000000000020;
+					};
+				};
 			};
 			buildConfigurationList = A10000000000000000000010 /* Build configuration list for PBXProject "OSReport" */;
 			developmentRegion = en;
@@ -117,12 +169,20 @@
 			projectRoot = "";
 			targets = (
 				A10000000000000000000020 /* OSReport */,
+				A10000000000000000000050 /* OSReportTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		A10000000000000000000023 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A10000000000000000000055 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -139,7 +199,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A10000000000000000000053 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A10000000000000000000057 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A10000000000000000000020 /* OSReport */;
+			targetProxy = A10000000000000000000056 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		A10000000000000000000011 /* Debug */ = {
@@ -147,6 +222,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_ENHANCED_SECURITY = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
@@ -162,6 +238,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_ENHANCED_SECURITY = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -172,12 +249,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = OSReport/OSReport.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2026102701;
+				CURRENT_PROJECT_VERSION = 2026112402;
 				DEVELOPMENT_TEAM = LAR9U97K23;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_HARDWARE_CHECKED_POINTER_ARITHMETIC_SLICE = NO;
+				ENABLE_POINTER_AUTHENTICATION = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OSReport/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "OS Report";
@@ -187,7 +267,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2026.10.27;
+				MARKETING_VERSION = 2026.11.24;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sherrodsoftware.OSReport;
 				PRODUCT_MODULE_NAME = OSReport;
 				PRODUCT_NAME = "OS Report";
@@ -199,12 +279,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = OSReport/OSReport.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2026102701;
+				CURRENT_PROJECT_VERSION = 2026112402;
 				DEVELOPMENT_TEAM = LAR9U97K23;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_HARDWARE_CHECKED_POINTER_ARITHMETIC_SLICE = NO;
+				ENABLE_POINTER_AUTHENTICATION = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OSReport/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "OS Report";
@@ -214,11 +297,47 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2026.10.27;
+				MARKETING_VERSION = 2026.11.24;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sherrodsoftware.OSReport;
 				PRODUCT_MODULE_NAME = OSReport;
 				PRODUCT_NAME = "OS Report";
 				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		A10000000000000000000061 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LAR9U97K23;
+				ENABLE_HARDWARE_CHECKED_POINTER_ARITHMETIC_SLICE = NO;
+				ENABLE_POINTER_AUTHENTICATION = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sherrodsoftware.OSReportTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OS Report.app/Contents/MacOS/OS Report";
+			};
+			name = Debug;
+		};
+		A10000000000000000000062 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LAR9U97K23;
+				ENABLE_HARDWARE_CHECKED_POINTER_ARITHMETIC_SLICE = NO;
+				ENABLE_POINTER_AUTHENTICATION = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sherrodsoftware.OSReportTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OS Report.app/Contents/MacOS/OS Report";
 			};
 			name = Release;
 		};
@@ -239,6 +358,15 @@
 			buildConfigurations = (
 				A10000000000000000000031 /* Debug */,
 				A10000000000000000000032 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A10000000000000000000060 /* Build configuration list for PBXNativeTarget "OSReportTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000000000000000000061 /* Debug */,
+				A10000000000000000000062 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

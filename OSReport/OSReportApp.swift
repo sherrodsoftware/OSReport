@@ -13,13 +13,17 @@ struct OSReportApp: App {
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var controller: StatusItemController?
-    private let updaterController = SPUStandardUpdaterController(
-        startingUpdater: true,
-        updaterDelegate: nil,
-        userDriverDelegate: nil
-    )
+    private var updaterController: SPUStandardUpdaterController?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        // Unit tests load the app as their host; skip the menu, timer, Sparkle and notifications there.
+        guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil else { return }
+        let updaterController = SPUStandardUpdaterController(
+            startingUpdater: true,
+            updaterDelegate: nil,
+            userDriverDelegate: nil
+        )
+        self.updaterController = updaterController
         controller = StatusItemController(updater: updaterController.updater)
     }
 }

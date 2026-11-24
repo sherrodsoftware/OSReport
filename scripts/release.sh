@@ -9,7 +9,8 @@ TEAM_ID="LAR9U97K23"
 BUNDLE_ID="com.sherrodsoftware.OSReport"
 APP_NAME="OSReport"
 APP_BUNDLE="OS Report.app"
-INSTALLER_IDENTITY="Developer ID Installer: JOHN WILLIAM SHERROD (${TEAM_ID})"
+INSTALLER_IDENTITY=$(security find-identity -v | sed -n "s/.*\"\(Developer ID Installer: .* (${TEAM_ID})\)\".*/\1/p" | head -1)
+[[ -n "$INSTALLER_IDENTITY" ]] || { echo "No Developer ID Installer certificate for team ${TEAM_ID} in the keychain" >&2; exit 1; }
 NOTARY_PROFILE="${NOTARY_PROFILE:-notary}"
 SKIP_NOTARIZE=false
 [[ "${1:-}" == "--skip-notarize" ]] && SKIP_NOTARIZE=true

@@ -37,8 +37,19 @@ struct Platform: Sendable {
 enum ReleaseParser {
     static let pageURL = URL(string: "https://support.apple.com/en-us/100100")!
 
+    /// The contents of each `<tr>…</tr>`. Plain string search is several times faster than a regex over the whole page.
+    static func rows(in html: Substring) -> [Substring] {
+        var rows: [Substring] = []
+        var searchStart = html.startIndex
+        while let open = html.range(of: "<tr>", range: searchStart..<html.endIndex),
+              let close = html.range(of: "</tr>", range: open.upperBound..<html.endIndex) {
+            rows.append(html[open.upperBound..<close.lowerBound])
+            searchStart = close.upperBound
+        }
+        return rows
+    }
+
     static func parse(_ html: String) -> [Platform] {
-        let rowRegex = /<tr>(.*?)<\/tr>/.dotMatchesNewlines()
         let cellRegex = /<td[^>]*>(.*?)<\/td>/.dotMatchesNewlines()
         let linkRegex = /<a[^>]*href="([^"]+)"[^>]*>(.*?)<\/a>/.dotMatchesNewlines()
         let firstParagraph = /<p[^>]*>(.*?)<\/p>/.dotMatchesNewlines()
@@ -47,8 +58,8 @@ enum ReleaseParser {
         var groups: [String: [Release]] = [:]
         var order: [String] = []
 
-        for row in html.matches(of: rowRegex) {
-            let cells = row.output.1.matches(of: cellRegex).map { String($0.output.1) }
+        for row in rows(in: html[...]) {
+            let cells = row.matches(of: cellRegex).map { String($0.output.1) }
             guard cells.count >= 3 else { continue }
 
             let nameCell = cells[0]

@@ -44,7 +44,9 @@ final class StatusItemController: NSObject, NSMenuDelegate, UNUserNotificationCe
 
     @objc private func openSettings() {
         if settingsWindow == nil {
-            let view = SettingsView(updater: updater) { [weak self] in self?.schedule($0) }
+            let view = SettingsView(updaterSettings: UpdaterSettings(updater, \.automaticallyChecksForUpdates)) { [weak self] in
+                self?.schedule($0)
+            }
             let window = NSWindow(contentViewController: NSHostingController(rootView: view))
             window.title = "OS Report Settings"
             window.styleMask = [.titled, .closable]

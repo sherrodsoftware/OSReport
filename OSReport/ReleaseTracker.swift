@@ -5,31 +5,39 @@ import UserNotifications
 final class ReleaseTracker {
     static let notificationsKey = "notifyNewReleases"
 
-    private let defaults = UserDefaults.standard
+    private let defaults: UserDefaults
     private let seenKey = "seenLatestVersions"
     private let unseenKey = "unseenPlatforms"
 
     private(set) var unseen: Set<String>
 
-    init() {
+    init(defaults: UserDefaults = .standard) {
+        self.defaults = defaults
         unseen = Set(defaults.stringArray(forKey: unseenKey) ?? [])
     }
 
     /// Returns the platforms whose latest release is newer than last time. The first run only records a baseline.
+    /// Saved versions are merged, never dropped or lowered, so a partial page can't make a known release look new later.
     func recordNewReleases(in platforms: [Platform]) -> [Platform] {
         let seen = defaults.dictionary(forKey: seenKey) as? [String: String]
-        defaults.set(Dictionary(uniqueKeysWithValues: platforms.map { ($0.name, $0.latest.version) }), forKey: seenKey)
+        var merged = seen ?? [:]
+        for platform in platforms where isNewer(platform.latest.version, than: merged[platform.name]) {
+            merged[platform.name] = platform.latest.version
+        }
+        defaults.set(merged, forKey: seenKey)
         guard let seen else { return [] }
 
-        let new = platforms.filter { platform in
-            guard let old = seen[platform.name] else { return true }
-            return platform.latest.version.compare(old, options: .numeric) == .orderedDescending
-        }
+        let new = platforms.filter { isNewer($0.latest.version, than: seen[$0.name]) }
         if !new.isEmpty {
             unseen.formUnion(new.map(\.name))
             defaults.set(Array(unseen), forKey: unseenKey)
         }
         return new
+    }
+
+    private func isNewer(_ version: String, than old: String?) -> Bool {
+        guard let old else { return true }
+        return version.compare(old, options: .numeric) == .orderedDescending
     }
 
     func markAllSeen() {
